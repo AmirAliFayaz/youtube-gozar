@@ -35,7 +35,7 @@
 
 4. Run the tool:
     ```bash
-    python youtube_gozar.py
+    python app.py
     ```
 
 ## Usage 🛠️
