@@ -4,26 +4,42 @@ import customtkinter as ctk
 import socket
 import proxy
 import smlwb
+import logging
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+connected = False
 
 def toggle_connection():
     global connected
-    connected = not connected
-    if connected:
-        proxy_address = '127.0.0.1'
-        proxy_port = '4525'
-        isOk = proxy.set_proxy(proxy_address, proxy_port)
-        print(15, isOk)
-        if not isOk:
-            return
-        threading.Thread(target=run_app, daemon=True).start()  
-        update_button("Disconnect", "white", "green")
-    else:
-        isOk = proxy.unset_proxy()
-        print(22, isOk)
-        if not isOk:
-            return
-        update_button("Connect", "black", "SystemButtonFace")
+    try:
+        connected = not connected
+        
+        if connected:
+            proxy_address = '127.0.0.1'
+            proxy_port = '4525'
+            is_ok = proxy.set_proxy(proxy_address, proxy_port)
+            logging.info(f"Proxy set result: {is_ok}")
+            
+            if not is_ok:
+                logging.error("Failed to set proxy.")
+                return
+
+            threading.Thread(target=run_app, daemon=True).start()
+            update_button("Disconnect", "white", "green")
+            
+        else:
+            is_ok = proxy.unset_proxy()
+            logging.info(f"Proxy unset result: {is_ok}")
+            
+            if not is_ok:
+                logging.error("Failed to unset proxy.")
+                return
+
+            update_button("Connect", "black", "SystemButtonFace")
+            
+    except Exception as e:
+        logging.error(f"Error in toggle_connection: {e}")
 
 
 def run_app():
