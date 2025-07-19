@@ -20,7 +20,7 @@
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/itzk4sra/youtube-gozar.git
+    git clone https://github.com/AmirAliFayaz/youtube-gozar.git
     ```
 
 2. Navigate to the project folder:
